@@ -1,2 +1,3 @@
 *.o
 /libecp.so
+/sign_secp224k1

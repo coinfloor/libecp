@@ -14,10 +14,10 @@ endif
 
 .PHONY : all clean
 
-all : libecp.so
+all : libecp.so sign_secp224k1
 
 clean :
-	rm -f *.o libecp.so
+	rm -f *.o libecp.so sign_secp224k1
 
 
 ecp.o : ecp.c ecp.h
@@ -25,6 +25,10 @@ ecp.o : ecp.c ecp.h
 libecp.o : libecp.c libecp.h ecp.h
 
 libecp.so : libecp.o ecp.o
+
+sign_secp224k1.o : ecp.h
+
+sign_secp224k1 : sign_secp224k1.o ecp.o
 
 
 %.so : %.o
