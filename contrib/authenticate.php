@@ -17,7 +17,7 @@ function build_authenticate_message(
 	$private_key = hash('sha224', pack64_be($user_id) . $passphrase, TRUE);
 
 	// message to sign is the concatenation of the 64-bit user ID, server nonce, and client nonce
-	$message_to_sign = hash('sha224', pack64_be($user_id) . base64_decode($server_nonce) . $client_nonce, TRUE);
+	$message_to_sign = pack64_be($user_id) . base64_decode($server_nonce) . $client_nonce;
 
 	// spawn the sign_secp224k1 utility as an external process
 	$proc = proc_open('./sign_secp224k1', array(
@@ -30,7 +30,7 @@ function build_authenticate_message(
 	fwrite($pipes[0], $private_key);
 
 	// write the SHA-224 hash of the message to the utility's standard input
-	fwrite($pipes[0], hash('sha224', $message, TRUE));
+	fwrite($pipes[0], hash('sha224', $message_to_sign, TRUE));
 
 	// close PHP's end of the pipe connected to the utility's standard input
 	fclose($pipes[0]);
