@@ -85,6 +85,7 @@ const mp_limb_t secp256k1_n[MP_NLIMBS(32)] = {
 	MP_LIMB_C(0xFFFFFFFE, 0xFFFFFFFF), MP_LIMB_C(0xFFFFFFFF, 0xFFFFFFFF)
 };
 
+#if __GNU_MP_RELEASE < 60100
 static inline bool mpn_zero_p(const mp_limb_t n[], size_t l) {
 	for (size_t i = 0; i < l; ++i) {
 		if (n[i] != 0) {
@@ -93,6 +94,7 @@ static inline bool mpn_zero_p(const mp_limb_t n[], size_t l) {
 	}
 	return true;
 }
+#endif
 
 static inline bool mpn_one_p(const mp_limb_t n[], size_t l) {
 	return l > 0 && n[0] == 1 && mpn_zero_p(n + 1, l - 1);
